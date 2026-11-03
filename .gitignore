@@ -1,0 +1,18 @@
+# 构建与本地依赖，不入库
+1.21.11/lib/
+1.21.11/build/
+1.21.11/dist/
+1.21.11/tests/build/
+
+# 产物
+*.jar
+*.class
+# 但 releases/ 下的发布包要入库，方便直接下载
+!releases/*.jar
+
+# 编辑器 / 系统
+.idea/
+.vscode/
+*.iml
+Thumbs.db
+.DS_Store

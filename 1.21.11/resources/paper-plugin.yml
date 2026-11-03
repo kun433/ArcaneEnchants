@@ -1,0 +1,11 @@
+# ArcaneEnchants
+# 自定义附魔必须注册在服务端附魔注册表冻结之前，所以本插件是 Paper plugin 格式，
+# 并通过 bootstrapper 在 bootstrap 阶段完成注册。
+name: ArcaneEnchants
+version: 1.0.0
+main: com.arcaneenchants.ArcaneEnchantsPlugin
+bootstrapper: com.arcaneenchants.ArcaneEnchantsBootstrap
+api-version: '1.21'
+description: 添加 10 个按功能强弱分层获取的自定义附魔，每个附魔都带对应属性加成。
+authors: [ArcaneEnchants]
+website: https://github.com/kun433/ArcaneEnchants
