@@ -7,8 +7,6 @@
 # 产物
 *.jar
 *.class
-# 但 releases/ 下的发布包要入库，方便直接下载
-!releases/*.jar
 
 # 编辑器 / 系统
 .idea/

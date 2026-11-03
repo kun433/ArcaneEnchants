@@ -1,5 +1,9 @@
 # ArcaneEnchants
 
+**English** · [**中文文档**](README.zh-CN.md)
+
+[Download](https://github.com/kun433/ArcaneEnchants/releases/latest) · [All releases](https://github.com/kun433/ArcaneEnchants/releases)
+
 Custom enchantments for **Minecraft 1.21.11 on Leaf / Paper**. Ten enchantments, each with its own attribute bonuses,
 and acquisition tied to how much the enchantment actually does:
 
@@ -45,9 +49,10 @@ server's item registry.
 
 ## Install
 
-1. Drop `ArcaneEnchants-1.0.0-1.21.11.jar` into `plugins/`.
-2. Start the server once; `plugins/ArcaneEnchants/config.yml` is generated.
-3. Enchantments are registered at server start. `/ae status` should report `10/10` registered.
+1. Download `ArcaneEnchants-1.0.0-1.21.11.jar` from the [releases page](https://github.com/kun433/ArcaneEnchants/releases/latest), or build it yourself.
+2. Drop the jar into `plugins/`.
+3. Start the server once; `plugins/ArcaneEnchants/config.yml` is generated.
+4. Enchantments are registered at server start. `/ae status` should report `10/10` registered.
 
 Leaf and Paper 1.21.11 only. This is a Paper plugin (`paper-plugin.yml`), so it does not work on Spigot or Fabric.
 

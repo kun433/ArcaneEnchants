@@ -1,5 +1,9 @@
 # ArcaneEnchants
 
+[**English**](README.md) · **中文文档**
+
+[下载最新版](https://github.com/kun433/ArcaneEnchants/releases/latest) · [全部发布](https://github.com/kun433/ArcaneEnchants/releases)
+
 **Minecraft 1.21.11（Leaf / Paper）** 的自定义附魔插件。共 10 个附魔，每个都带独立属性加成，
 并且获取难度与该附魔真正做了多少事挂钩：
 
@@ -41,9 +45,10 @@
 
 ## 安装
 
-1. 把 `ArcaneEnchants-1.0.0-1.21.11.jar` 放进 `plugins/`。
-2. 启动一次服务器，生成 `plugins/ArcaneEnchants/config.yml`。
-3. 之后每次启动都会注册附魔，`/ae status` 应当显示 `10/10`。
+1. 从 [发布页](https://github.com/kun433/ArcaneEnchants/releases/latest) 下载 `ArcaneEnchants-1.0.0-1.21.11.jar`，或自行构建。
+2. 把 jar 放进 `plugins/`。
+3. 启动一次服务器，生成 `plugins/ArcaneEnchants/config.yml`。
+4. 之后每次启动都会注册附魔，`/ae status` 应当显示 `10/10`。
 
 仅支持 Leaf / Paper 1.21.11。本插件是 Paper plugin 格式（`paper-plugin.yml`），不能用于 Spigot 或 Fabric。
 
