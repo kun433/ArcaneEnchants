@@ -4,7 +4,7 @@
 
 [Download](https://github.com/kun433/ArcaneEnchants/releases/latest) · [All releases](https://github.com/kun433/ArcaneEnchants/releases)
 
-Custom enchantments for **Minecraft 26.3 on Leaf / Paper**, with a matching **1.21.11** build of the same feature set. Ten enchantments, each with its own attribute bonuses,
+Custom enchantments for **Minecraft 26.3 on Leaf / Paper**. Ten enchantments, each with its own attribute bonuses,
 and acquisition tied to how much the enchantment actually does:
 
 - **Simple** enchantments (attribute only) show up in the enchanting table and in loot chests at a normal rate.
@@ -49,21 +49,18 @@ server's item registry.
 
 ## Install
 
-Match the jar to your server version:
+The maintained target is **Leaf / Paper 26.3**: `ArcaneEnchants-1.1.0-26.3.jar`, which requires **Java 25**.
 
-| Server | Jar | Runtime |
-| --- | --- | --- |
-| Leaf / Paper **26.3** | `ArcaneEnchants-1.1.0-26.3.jar` | Java 25 |
-| Leaf / Paper **1.21.11** | `ArcaneEnchants-1.1.0-1.21.11.jar` | Java 21 |
-
-1. Download the jar for your version from the [releases page](https://github.com/kun433/ArcaneEnchants/releases/latest), or build it yourself.
+1. Download `ArcaneEnchants-1.1.0-26.3.jar` from the [releases page](https://github.com/kun433/ArcaneEnchants/releases/latest), or build it yourself.
 2. Drop the jar into `plugins/`.
 3. Start the server once; `plugins/ArcaneEnchants/config.yml` is generated.
 4. Enchantments are registered at server start. `/ae status` should report `10/10` registered.
 
-Both builds share identical sources and behaviour; only `api-version` (`26.3` / `1.21`) and the compile target differ.
-26.3 is a Java 25 platform (vanilla 26.3 ships `java_version: 25` in its `version.json`), so its jar will not load on Java 21,
-and the 1.21.11 build will not load on 26.3. This is a Paper plugin (`paper-plugin.yml`), so it does not work on Spigot or Fabric.
+The 1.21.11 build stays at **1.0.0** (`ArcaneEnchants-1.0.0-1.21.11.jar`, Java 21). It is no longer updated and only
+remains on the [v1.0.0 release](https://github.com/kun433/ArcaneEnchants/releases/tag/v1.0.0); the `1.21.11/` directory is
+kept in the repository as a historical record and does not receive new features. The two jars are not interchangeable:
+the 26.3 build only loads on 26.3+, and the 1.21.11 build will not load on 26.3.
+This is a Paper plugin (`paper-plugin.yml`), so it does not work on Spigot or Fabric.
 
 ## Commands and permissions
 
@@ -100,21 +97,21 @@ Book levels are drawn with a `1/level` weighting: level I is the most common, hi
 # 26.3: JDK 25 required (Paper API 26.3 is compiled to class file version 69)
 powershell -ExecutionPolicy Bypass -File 26.3\fetch-libs.ps1   # once after cloning, pulls the compile dependencies
 powershell -ExecutionPolicy Bypass -File 26.3\build.ps1
-
-# 1.21.11: JDK 21 required
-powershell -ExecutionPolicy Bypass -File 1.21.11\build.ps1
 ```
 
 `lib\` is compile-only, never bundled, and gitignored. The Paper API 26.3 pom already lists brigadier and
 `adventure-text-logger-slf4j` as compile dependencies, so `26.3\lib\compile\` holds only API and library jars —
-**no server jar is needed** — and `fetch-libs.ps1` downloads all of them. The 1.21.11 build keeps the original
-`lib\compile\` + `lib\server\` layout. Override with `ARCANE_JDK`, `ARCANE_LIBS` and `ARCANE_SERVER_LIBS` if your paths differ.
+**no server jar is needed** — and `fetch-libs.ps1` downloads all of them.
+Override with `ARCANE_JDK` and `ARCANE_LIBS` if your paths differ.
+
+The `1.21.11/` directory still carries the 1.0.0 build script (JDK 21 plus the `lib/server` layout) as a historical record;
+it is not updated with new features.
 
 ## Validation
 
 - 26.3: `javac --release 25`, 17 classes, no errors and no deprecation warnings; `tests\run-tests.ps1` passes
   2813 offline assertions with 0 failures.
-- 1.21.11: `javac --release 21`, 17 classes, no errors; the same 2813 assertions pass with 0 failures.
+- 1.21.11 (the 1.0.0 build, unchanged): `javac --release 21` clean, and the same 2813 assertions pass with 0 failures.
 - Assertions cover "every enchantment has attributes", tier rules (simple = attributes only and table-available,
   complex = behaviour plus table-excluded), numeric ranges, tag and slot names that really exist on the server,
   fallback item list sanity, attribute growth per level, level-roll probability (sums to 1, level I most common),
