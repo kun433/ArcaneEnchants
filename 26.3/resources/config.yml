@@ -1,0 +1,137 @@
+# ArcaneEnchants 配置
+#
+# 附魔的分层与属性定义在代码里（src/com/arcaneenchants/Defs.java），
+# 这里只控制「获取概率 / 行为开关 / 提示文本」，改完执行 /ae reload 生效。
+# language 决定附魔名与功能说明用中文还是英文，仅在服务端启动时读取，改语言需要重启。
+
+language: zh_CN
+
+loot:
+  # 战利品箱是否投放本插件附魔书
+  enabled: true
+  # 简单附魔（可在附魔台刷出）在战利品箱中的出现概率
+  simple-chance: 0.06
+  # 复杂附魔（村民交易专属）在战利品箱中的稀有概率
+  complex-chance: 0.008
+  # 同一个箱子最多投放几本
+  max-books-per-container: 1
+  # 钓鱼战利品是否也投放
+  allow-fishing: false
+  # 按战利品表名过滤（包含即跳过），例如 chests/village
+  table-blacklist: []
+
+trades:
+  # 是否允许图书管理员出售复杂附魔书
+  enabled: true
+  # 每次村民升级时，替换一格交易的概率
+  chance: 0.35
+  # 基础绿宝石价格，实际价格 = 该值 × 书等级
+  emeralds: 24
+  # 每格交易可使用次数
+  max-uses: 3
+  # 村民至少达到的等级（1 新手 ~ 5 大师）
+  min-villager-level: 3
+  # 只限图书管理员；false 则任意职业都可能出现
+  require-librarian: true
+
+attributes:
+  # 是否把附魔属性写进物品的 attribute_modifiers（关闭后属性加成不生效）
+  enabled: true
+  # 背包属性兜底扫描间隔（tick），20 tick = 1 秒
+  sync-interval-ticks: 100
+
+behaviors:
+  # 永固：耐久永不消耗
+  eternal-durability: true
+  # 贪婪：挖掘时额外掉落
+  greed-extra-drops: true
+  # 血契：造成伤害回复生命
+  bloodpact-lifesteal: true
+  # 血契回血冷却（毫秒）
+  bloodpact-cooldown-ms: 500
+  # 守望：低血量受击获得抗性提升
+  warder-low-health: true
+  # 守望触发冷却（秒）
+  warder-cooldown-seconds: 20
+  # 回响：命中点燃目标
+  resonance-ignite: true
+
+# 提示文本使用 MiniMessage 格式：https://docs.advntr.dev/minimessage/format.html
+# 支持颜色标签，例如 <green>文字</green>
+messages:
+  zh:
+    help-header: '<gold>ArcaneEnchants</gold> <gray>共 %d 个附魔：</gray><green>%d 个简单</green><gray> / </gray><red>%d 个复杂</red>'
+    help-list: '<yellow>/ae list</yellow> <gray>— 列出全部附魔与属性</gray>'
+    help-info: '<yellow>/ae info <id></yellow> <gray>— 查看单个附魔详情</gray>'
+    help-give: '<yellow>/ae give <玩家> <id> [等级]</yellow> <gray>— 给予附魔书</gray>'
+    help-apply: '<yellow>/ae apply <id> [等级]</yellow> <gray>— 给手上物品附魔</gray>'
+    help-status: '<yellow>/ae status</yellow> <gray>— 查看注册与获取途径状态</gray>'
+    help-reload: '<yellow>/ae reload</yellow> <gray>— 重载配置</gray>'
+    list-header: '<gold>附魔列表</gold> <gray>（简单：附魔台+战利品箱；复杂：村民交易+0.8% 稀有战利品）</gray>'
+    list-entry: '<white>#%s</white> <aqua>%s</aqua> <dark_gray>|</dark_gray> <gray>%s</gray> <dark_gray>|</dark_gray> <gray>最高 %d 级</gray> <dark_gray>|</dark_gray> <green>%s</green>'
+    tier-simple: '简单'
+    tier-complex: '复杂'
+    info-header: '<gold>%s</gold> <dark_gray>(%s)</dark_gray>'
+    info-tier: '<gray>分层：</gray><white>%s</white>'
+    info-summary: '<gray>功能：</gray><white>%s</white>'
+    info-levels: '<gray>最高等级：</gray><white>%d</white>'
+    info-attributes: '<gray>属性：</gray><green>%s</green>'
+    info-behavior: '<gray>行为：</gray><white>%s</white>'
+    info-items: '<gray>可附魔物品标签：</gray><white>%s</white>'
+    info-usage: '<red>用法：/ae info <id></red>'
+    give-usage: '<red>用法：/ae give <玩家> <id> [等级]</red>'
+    apply-usage: '<red>用法：/ae apply <id> [等级]</red>'
+    player-only: '<red>只有玩家可以这样使用。</red>'
+    no-item: '<red>主手没有物品。</red>'
+    unknown-id: '<red>未知附魔 id：%s</red>'
+    unknown-player: '<red>找不到在线玩家：%s</red>'
+    not-registered: '<red>附魔 %s 未注册成功，请检查服务端版本。</red>'
+    cannot-enchant: '<red>手上的物品无法附加「%s」。</red>'
+    gave: '<green>已给予 %s 一本「%s %d」。</green>'
+    applied: '<green>已为手上物品附加「%s %d」。</green>'
+    status-header: '<gold>ArcaneEnchants 状态</gold>'
+    status-registered: '<gray>注册状态：</gray><white>%d/%d</white>'
+    status-loot: '<gray>战利品箱概率：</gray><green>简单 %s</green><gray> / </gray><red>复杂 %s</red>'
+    status-trade: '<gray>村民交易：</gray><white>%s 概率，基础 %d 绿宝石</white>'
+    status-missing: '<red>未注册：%s</red>'
+    status-discoverable: '<gray>已进入原版可发现标签：</gray><green>%s</green>'
+    status-table: '<gray>可上附魔台：</gray><green>%s</green>'
+    reloaded: '<green>配置已重载。</green>'
+  en:
+    help-header: '<gold>ArcaneEnchants</gold> <gray>- %d enchantments: </gray><green>%d simple</green><gray> / </gray><red>%d complex</red>'
+    help-list: '<yellow>/ae list</yellow> <gray>- list every enchantment and its attributes</gray>'
+    help-info: '<yellow>/ae info <id></yellow> <gray>- details for one enchantment</gray>'
+    help-give: '<yellow>/ae give <player> <id> [level]</yellow> <gray>- give an enchanted book</gray>'
+    help-apply: '<yellow>/ae apply <id> [level]</yellow> <gray>- enchant the held item</gray>'
+    help-status: '<yellow>/ae status</yellow> <gray>- registration and acquisition status</gray>'
+    help-reload: '<yellow>/ae reload</yellow> <gray>- reload config</gray>'
+    list-header: '<gold>Enchantment list</gold> <gray>(simple: enchanting table + loot; complex: villager trades + 0.8% rare loot)</gray>'
+    list-entry: '<white>#%s</white> <aqua>%s</aqua> <dark_gray>|</dark_gray> <gray>%s</gray> <dark_gray>|</dark_gray> <gray>max %d</gray> <dark_gray>|</dark_gray> <green>%s</green>'
+    tier-simple: 'simple'
+    tier-complex: 'complex'
+    info-header: '<gold>%s</gold> <dark_gray>(%s)</dark_gray>'
+    info-tier: '<gray>Tier: </gray><white>%s</white>'
+    info-summary: '<gray>Effect: </gray><white>%s</white>'
+    info-levels: '<gray>Max level: </gray><white>%d</white>'
+    info-attributes: '<gray>Attributes: </gray><green>%s</green>'
+    info-behavior: '<gray>Behavior: </gray><white>%s</white>'
+    info-items: '<gray>Enchantable tag: </gray><white>%s</white>'
+    info-usage: '<red>Usage: /ae info <id></red>'
+    give-usage: '<red>Usage: /ae give <player> <id> [level]</red>'
+    apply-usage: '<red>Usage: /ae apply <id> [level]</red>'
+    player-only: '<red>Only players can use this.</red>'
+    no-item: '<red>No item in your main hand.</red>'
+    unknown-id: '<red>Unknown enchantment id: %s</red>'
+    unknown-player: '<red>Player not online: %s</red>'
+    not-registered: '<red>Enchantment %s was not registered, check your server version.</red>'
+    cannot-enchant: '<red>This item cannot hold "%s".</red>'
+    gave: '<green>Gave %s a book of %s %d.</green>'
+    applied: '<green>Applied %s %d to the held item.</green>'
+    status-header: '<gold>ArcaneEnchants status</gold>'
+    status-registered: '<gray>Registered: </gray><white>%d/%d</white>'
+    status-loot: '<gray>Loot chance: </gray><green>simple %s</green><gray> / </gray><red>complex %s</red>'
+    status-trade: '<gray>Villager trades: </gray><white>%s chance, base %d emeralds</white>'
+    status-missing: '<red>Not registered: %s</red>'
+    status-discoverable: '<gray>In vanilla discoverable tags: </gray><green>%s</green>'
+    status-table: '<gray>Available in enchanting table: </gray><green>%s</green>'
+    reloaded: '<green>Config reloaded.</green>'

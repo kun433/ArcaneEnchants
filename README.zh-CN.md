@@ -4,7 +4,7 @@
 
 [下载最新版](https://github.com/kun433/ArcaneEnchants/releases/latest) · [全部发布](https://github.com/kun433/ArcaneEnchants/releases)
 
-**Minecraft 1.21.11（Leaf / Paper）** 的自定义附魔插件。共 10 个附魔，每个都带独立属性加成，
+**Minecraft 26.3（Leaf / Paper）** 的自定义附魔插件，同一套功能另外提供 **1.21.11** 构建。共 10 个附魔，每个都带独立属性加成，
 并且获取难度与该附魔真正做了多少事挂钩：
 
 - **简单附魔**（只有属性加成）能直接从附魔台刷出，也会以正常概率出现在战利品箱里。
@@ -45,12 +45,21 @@
 
 ## 安装
 
-1. 从 [发布页](https://github.com/kun433/ArcaneEnchants/releases/latest) 下载 `ArcaneEnchants-1.0.0-1.21.11.jar`，或自行构建。
+先确认服务端版本，再下对应的 jar：
+
+| 服务端 | jar | 运行时要求 |
+| --- | --- | --- |
+| Leaf / Paper **26.3** | `ArcaneEnchants-1.1.0-26.3.jar` | Java 25 |
+| Leaf / Paper **1.21.11** | `ArcaneEnchants-1.1.0-1.21.11.jar` | Java 21 |
+
+1. 从 [发布页](https://github.com/kun433/ArcaneEnchants/releases/latest) 下载对应版本的 jar，或自行构建。
 2. 把 jar 放进 `plugins/`。
 3. 启动一次服务器，生成 `plugins/ArcaneEnchants/config.yml`。
 4. 之后每次启动都会注册附魔，`/ae status` 应当显示 `10/10`。
 
-仅支持 Leaf / Paper 1.21.11。本插件是 Paper plugin 格式（`paper-plugin.yml`），不能用于 Spigot 或 Fabric。
+两个构建的源码与功能完全一致，只有 `paper-plugin.yml` 的 `api-version`（`26.3` / `1.21`）与编译目标不同。
+26.3 是 Java 25 平台（原版 26.3 的 `version.json` 即要求 Java 25），jar 不能放进 Java 21 环境；反之 1.21.11 的构建也无法在 26.3 上加载。
+本插件是 Paper plugin 格式（`paper-plugin.yml`），不能用于 Spigot 或 Fabric。
 
 ## 指令与权限
 
@@ -84,21 +93,30 @@ trades:
 ## 构建
 
 ```powershell
-# 需要 JDK 21；lib 只用于编译，不会打进产物
+# 26.3：需要 JDK 25（Paper API 26.3 的 class 版本就是 69）
+powershell -ExecutionPolicy Bypass -File 26.3\fetch-libs.ps1   # 首次克隆后跑一次，下载编译依赖
+powershell -ExecutionPolicy Bypass -File 26.3\build.ps1
+
+# 1.21.11：需要 JDK 21
 powershell -ExecutionPolicy Bypass -File 1.21.11\build.ps1
 ```
 
-`lib\compile\` 放 1.21.11 的 Paper API 与 Adventure jar；`lib\server\` 放 Paper 服务端 jar
-（仅编译用，补齐 Brigadier、Adventure logger 等类型）。两个目录都已在 `.gitignore` 中。
+`lib\` 只用于编译，不会打进产物，并且已在 `.gitignore` 中。26.3 的 Paper API pom 已把 brigadier 与
+`adventure-text-logger-slf4j` 列为 compile 依赖，所以 `26.3\lib\compile\` 里只有 API 与库 jar，**不需要服务端 jar**；
+`fetch-libs.ps1` 会把这些 jar 全部下到该目录。1.21.11 仍沿用原来的 `lib\compile\` + `lib\server\` 布局。
 路径不同时可用 `ARCANE_JDK`、`ARCANE_LIBS`、`ARCANE_SERVER_LIBS` 覆盖。
 
 ## 验证情况
 
-- `javac --release 21`：17 个类，零错误。
-- `tests\run-tests.ps1`：2813 项离线断言，0 失败。覆盖「每个附魔都必须有属性」、分层规则
-  （简单层 = 只有属性且可上附魔台，复杂层 = 有行为且不可上附魔台）、数值区间、
-  1.21.11 中真实存在的标签与槽位名、回退物品清单合法性、属性随等级增长、
-  等级抽取概率（和为 1、I 级最常见）、0.8% 默认概率、以及 `paper-plugin.yml` 的 bootstrapper 接线。
+- 26.3：`javac --release 25`，17 个类，零错误、零弃用警告；`tests\run-tests.ps1` 2813 项离线断言 0 失败。
+- 1.21.11：`javac --release 21`，17 个类，零错误；同样 2813 项断言 0 失败。
+- 断言覆盖「每个附魔都必须有属性」、分层规则（简单层 = 只有属性且可上附魔台，复杂层 = 有行为且不可上附魔台）、
+  数值区间、服务端真实存在的标签与槽位名、回退物品清单合法性、属性随等级增长、等级抽取概率
+  （和为 1、I 级最常见）、0.8% 默认概率、以及 `paper-plugin.yml` 的 bootstrapper 与 `api-version` 接线。
+- 26.3 的物品标签已逐项对照原版 26.3 的 `data/minecraft/tags/item`：`swords`、`enchantable/armor`、
+  `enchantable/foot_armor`、`enchantable/leg_armor`、`enchantable/chest_armor`、`enchantable/mining`、
+  `enchantable/durability`、`enchantable/melee_weapon` 全部存在；`#minecraft:spears`、铜制装备等 26.x 新增内容
+  也已包含在回退物品列表里。附魔侧的 `in_enchanting_table`、`non_treasure`、`treasure` 三个标签同样保留。
 - 未做真机进服冒烟测试；附魔注册这条链路只能在真实服务端上最终确认。
 
 ## 许可

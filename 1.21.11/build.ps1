@@ -8,7 +8,7 @@
 $ErrorActionPreference = 'Stop'
 
 $Root    = Split-Path -Parent $MyInvocation.MyCommand.Path
-$Version = '1.0.0'
+$Version = '1.1.0'
 $MC      = '1.21.11'
 $Name    = "ArcaneEnchants-$Version-$MC.jar"
 

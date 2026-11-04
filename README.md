@@ -4,7 +4,7 @@
 
 [Download](https://github.com/kun433/ArcaneEnchants/releases/latest) · [All releases](https://github.com/kun433/ArcaneEnchants/releases)
 
-Custom enchantments for **Minecraft 1.21.11 on Leaf / Paper**. Ten enchantments, each with its own attribute bonuses,
+Custom enchantments for **Minecraft 26.3 on Leaf / Paper**, with a matching **1.21.11** build of the same feature set. Ten enchantments, each with its own attribute bonuses,
 and acquisition tied to how much the enchantment actually does:
 
 - **Simple** enchantments (attribute only) show up in the enchanting table and in loot chests at a normal rate.
@@ -49,12 +49,21 @@ server's item registry.
 
 ## Install
 
-1. Download `ArcaneEnchants-1.0.0-1.21.11.jar` from the [releases page](https://github.com/kun433/ArcaneEnchants/releases/latest), or build it yourself.
+Match the jar to your server version:
+
+| Server | Jar | Runtime |
+| --- | --- | --- |
+| Leaf / Paper **26.3** | `ArcaneEnchants-1.1.0-26.3.jar` | Java 25 |
+| Leaf / Paper **1.21.11** | `ArcaneEnchants-1.1.0-1.21.11.jar` | Java 21 |
+
+1. Download the jar for your version from the [releases page](https://github.com/kun433/ArcaneEnchants/releases/latest), or build it yourself.
 2. Drop the jar into `plugins/`.
 3. Start the server once; `plugins/ArcaneEnchants/config.yml` is generated.
 4. Enchantments are registered at server start. `/ae status` should report `10/10` registered.
 
-Leaf and Paper 1.21.11 only. This is a Paper plugin (`paper-plugin.yml`), so it does not work on Spigot or Fabric.
+Both builds share identical sources and behaviour; only `api-version` (`26.3` / `1.21`) and the compile target differ.
+26.3 is a Java 25 platform (vanilla 26.3 ships `java_version: 25` in its `version.json`), so its jar will not load on Java 21,
+and the 1.21.11 build will not load on 26.3. This is a Paper plugin (`paper-plugin.yml`), so it does not work on Spigot or Fabric.
 
 ## Commands and permissions
 
@@ -88,22 +97,33 @@ Book levels are drawn with a `1/level` weighting: level I is the most common, hi
 ## Build
 
 ```powershell
-# JDK 21 required; libs are compile-only and never bundled
+# 26.3: JDK 25 required (Paper API 26.3 is compiled to class file version 69)
+powershell -ExecutionPolicy Bypass -File 26.3\fetch-libs.ps1   # once after cloning, pulls the compile dependencies
+powershell -ExecutionPolicy Bypass -File 26.3\build.ps1
+
+# 1.21.11: JDK 21 required
 powershell -ExecutionPolicy Bypass -File 1.21.11\build.ps1
 ```
 
-`lib\compile\` needs the Paper API and Adventure jars for 1.21.11; `lib\server\` needs the Paper server jar
-(compile-only, for Brigadier and Adventure logger types). Both directories are gitignored.
-Override with `ARCANE_JDK`, `ARCANE_LIBS` and `ARCANE_SERVER_LIBS` if your paths differ.
+`lib\` is compile-only, never bundled, and gitignored. The Paper API 26.3 pom already lists brigadier and
+`adventure-text-logger-slf4j` as compile dependencies, so `26.3\lib\compile\` holds only API and library jars —
+**no server jar is needed** — and `fetch-libs.ps1` downloads all of them. The 1.21.11 build keeps the original
+`lib\compile\` + `lib\server\` layout. Override with `ARCANE_JDK`, `ARCANE_LIBS` and `ARCANE_SERVER_LIBS` if your paths differ.
 
 ## Validation
 
-- `javac --release 21`: 17 classes, no errors.
-- `tests\run-tests.ps1`: 2813 offline assertions, 0 failures. These cover "every enchantment has attributes",
-  tier rules (simple = attributes only and table-available, complex = behaviour plus table-excluded),
-  numeric ranges, tag and slot names valid for 1.21.11, fallback item list sanity, attribute growth per level,
-  level-roll probability (sums to 1, level I most common), the 0.8% config default, and the `paper-plugin.yml`
-  bootstrapper wiring.
+- 26.3: `javac --release 25`, 17 classes, no errors and no deprecation warnings; `tests\run-tests.ps1` passes
+  2813 offline assertions with 0 failures.
+- 1.21.11: `javac --release 21`, 17 classes, no errors; the same 2813 assertions pass with 0 failures.
+- Assertions cover "every enchantment has attributes", tier rules (simple = attributes only and table-available,
+  complex = behaviour plus table-excluded), numeric ranges, tag and slot names that really exist on the server,
+  fallback item list sanity, attribute growth per level, level-roll probability (sums to 1, level I most common),
+  the 0.8% config default, and the `paper-plugin.yml` bootstrapper plus `api-version` wiring.
+- The 26.3 item tags were checked one by one against vanilla 26.3 `data/minecraft/tags/item`: `swords`,
+  `enchantable/armor`, `enchantable/foot_armor`, `enchantable/leg_armor`, `enchantable/chest_armor`,
+  `enchantable/mining`, `enchantable/durability` and `enchantable/melee_weapon` all exist, and 26.x additions such as
+  `#minecraft:spears` and copper gear are already covered by the fallback item lists. The `in_enchanting_table`,
+  `non_treasure` and `treasure` enchantment tags are also unchanged.
 - No live in-game smoke test was run; the enchantment registration path can only be confirmed on a running server.
 
 ## License
