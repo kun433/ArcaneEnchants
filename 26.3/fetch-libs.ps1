@@ -28,7 +28,7 @@ $files = [ordered]@{
     'examination-api-1.3.0.jar'           = "$Central/net/kyori/examination-api/1.3.0/examination-api-1.3.0.jar"
     'guava-33.6.0-jre.jar'                = "$Central/com/google/guava/guava/33.6.0-jre/guava-33.6.0-jre.jar"
     'bungeecord-chat-1.21.jar'            = "$Paper/net/md-5/bungeecord-chat/1.21-R0.2-deprecated+build.21/bungeecord-chat-1.21-R0.2-deprecated+build.21.jar"
-    'brigadier-1.3.11.jar'                = "$Central/com/mojang/brigadier/1.3.11/brigadier-1.3.11.jar"
+    'brigadier-1.3.11.jar'                = "$Paper/com/mojang/brigadier/1.3.11/brigadier-1.3.11.jar"
     'annotations-26.0.2.jar'              = "$Central/org/jetbrains/annotations/26.0.2/annotations-26.0.2.jar"
 }
 
