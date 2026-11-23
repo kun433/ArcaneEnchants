@@ -4,31 +4,121 @@
 
 [Download](https://github.com/kun433/ArcaneEnchants/releases/latest) · [All releases](https://github.com/kun433/ArcaneEnchants/releases)
 
-Custom enchantments for **Minecraft 26.3 on Leaf / Paper**. Ten enchantments, each with its own attribute bonuses,
-and acquisition tied to how much the enchantment actually does:
+Custom enchantments for **Minecraft 26.3 on Paper-family servers (Paper / Purpur / Leaf)**. Ten enchantments, all with attribute bonuses; five of them also add a real behaviour on top.
 
-- **Simple** enchantments (attribute only) show up in the enchanting table and in loot chests at a normal rate.
-- **Complex** enchantments (attribute plus a real behaviour) never appear in the enchanting table; you get them from
-  librarian trades or from rare loot chests at **0.8%**.
+## How acquisition works: two tiers
 
-## Enchantments
+The stronger the effect, the harder it is to get:
 
-| id | Name | Tier | Max | Attribute bonus | Behaviour | How to get |
-| --- | --- | --- | --- | --- | --- | --- |
-| `swiftstep` | Swiftstep | simple | 3 | `movement_speed` +4% per level (feet) | – | Enchanting table, loot 6% |
-| `fortified` | Fortified | simple | 3 | `armor` +1 per level (armor) | – | Enchanting table, loot 6% |
-| `keen` | Keen | simple | 3 | `attack_damage` +0.75 per level (main hand) | – | Enchanting table, loot 6% |
-| `stealthy` | Stealthy | simple | 3 | `sneaking_speed` +15% per level (legs) | – | Enchanting table, loot 6% |
-| `excavator` | Excavator | simple | 3 | `block_break_speed` +8% per level (main hand) | – | Enchanting table, loot 6% |
-| `eternal` | Eternal | complex | 1 | `knockback_resistance` +0.1 (any slot) | Durability never decreases | Librarian trade, loot 0.8% |
-| `greed` | Greed | complex | 3 | `luck` +1 per level (main hand) | 10% per level chance to duplicate a block drop | Librarian trade, loot 0.8% |
-| `bloodpact` | Bloodpact | complex | 3 | `max_health` +1 per level (hand) | Heal 8% per level of damage dealt (0.5s cooldown) | Librarian trade, loot 0.8% |
-| `warder` | Warder | complex | 3 | `armor_toughness` +1 per level (chest) | Below 35% health, getting hit grants Resistance (20s cooldown) | Librarian trade, loot 0.8% |
-| `resonance` | Resonance | complex | 3 | `attack_speed` +4% per level (main hand) | Ignites the target on hit, 2s per level | Librarian trade, loot 0.8% |
+| | Simple (5) | Complex (5) |
+| --- | --- | --- |
+| What it gives | Attribute bonus only | Attribute bonus + a behaviour |
+| Enchanting table | ✅ Can appear | ❌ Never appears |
+| Loot chests | 6% chance per chest | 0.8% chance per chest (very rare) |
+| Librarian trades | ❌ | ✅ The only reliable source |
+| Anvil combining / grindstone removal | Vanilla rules | Vanilla rules |
+
+- **Simple** enchantments behave like a few extra vanilla-style enchants: the enchanting table offers them, and chests often contain their books.
+- **Complex** enchantments come from librarians: whenever a librarian reaches **level 3 (expert) or above** and gains a new trade, there is a **35%** chance one slot is replaced with a complex book. Price = **24 emeralds × book level** (level 1: 24 / level 2: 48 / level 3: 72).
+- Book levels from chests and trades are random: **level I is the most common, higher levels are rarer**. By default each container holds at most 1 book, and fishing loot is excluded.
+
+## The enchantments
+
+### Simple (available in the enchanting table)
+
+#### Swiftstep
+
+**Run faster.**
+
+- Applies to: any boots; max level 3
+- Attribute: movement speed **+4%** per level (+12% at max)
+- How to get: enchanting table / loot chests 6%
+
+#### Fortified
+
+**Take hits better.**
+
+- Applies to: any armor piece; max level 3
+- Attribute: armor **+1** per level (+3 at max)
+- How to get: enchanting table / loot chests 6%
+
+#### Keen
+
+**Hit harder.**
+
+- Applies to: swords; max level 3
+- Attribute: attack damage **+0.75** per level (+2.25 at max)
+- How to get: enchanting table / loot chests 6%
+
+#### Stealthy
+
+**Sneak (hold Shift) noticeably faster.**
+
+- Applies to: leggings; max level 3
+- Attribute: sneaking speed **+15%** per level (+45% at max)
+- How to get: enchanting table / loot chests 6%
+
+#### Excavator
+
+**Break blocks faster.**
+
+- Applies to: pickaxes / shovels / axes / hoes / shears; max level 3
+- Attribute: block break speed **+8%** per level (+24% at max)
+- How to get: enchanting table / loot chests 6%
+
+### Complex (librarian trades or rare loot only)
+
+#### Eternal
+
+**Gear never wears out.**
+
+- Applies to: everything with durability (armor, tools, weapons, bows, elytra, shields, …); level 1 only
+- Attribute: knockback resistance **+10%**
+- Behaviour: durability never decreases — effectively unbreakable
+- How to get: librarian trade (24 emeralds) / loot chests 0.8%
+
+#### Greed
+
+**Chance to double your mined drops.**
+
+- Applies to: pickaxes / shovels / axes / hoes / shears; max level 3
+- Attribute: luck **+1** per level (+3 at max, affects some vanilla loot rolls)
+- Behaviour: each drop from a mined block has a **10%/level** chance to be duplicated (30% at max, hard cap 90%)
+- How to get: librarian trade (24 / 48 / 72 emeralds) / loot chests 0.8%
+
+#### Bloodpact
+
+**Lifesteal plus extra max health.**
+
+- Applies to: swords; max level 3
+- Attribute: max health **+1** per level (+3 at max)
+- Behaviour: after damaging a mob, heal for **8%/level** of the damage dealt (0.5s cooldown; 24% at max — hitting for 10 damage heals 2.4)
+- How to get: librarian trade (24 / 48 / 72 emeralds) / loot chests 0.8%
+
+#### Warder
+
+**Auto-Resistance when you are about to die.**
+
+- Applies to: chestplates; max level 3
+- Attribute: armor toughness **+1** per level (+3 at max)
+- Behaviour: when a hit would drop your health to **35% or below**, you instantly gain a short Resistance buff — level 1: Resistance I 3s / level 2: Resistance II 4s / level 3: Resistance III 5s; 20s cooldown
+- How to get: librarian trade (24 / 48 / 72 emeralds) / loot chests 0.8%
+
+#### Resonance
+
+**Everything you hit catches fire.**
+
+- Applies to: melee weapons (swords, axes — follows the vanilla `enchantable/melee_weapon` tag); max level 3
+- Attribute: attack speed **+4%** per level (+12% at max)
+- Behaviour: hits ignite the target for 2s per level (6s at max)
+- How to get: librarian trade (24 / 48 / 72 emeralds) / loot chests 0.8%
+
+## How attributes are applied
 
 Attribute bonuses are written into the item's `attribute_modifiers` component, so they show up in the vanilla tooltip
-and are applied by the game itself. They are recalculated whenever the item's enchantment levels change, so removing an
-enchantment in an anvil or grindstone leaves no leftovers.
+(for example "+12% movement speed") and are applied by the game itself — no per-tick temporary attributes from the plugin.
+They are recalculated whenever the item's enchantment levels change, so removing an enchantment in an anvil or grindstone
+leaves no leftovers.
 
 Applicable items come from the vanilla `enchantable/*` item tags (`#minecraft:swords`, `minecraft:enchantable/armor`,
 `minecraft:enchantable/mining`, `minecraft:enchantable/durability`, and so on), so new tool tiers are picked up
@@ -49,7 +139,7 @@ server's item registry.
 
 ## Install
 
-The maintained target is **Leaf / Paper 26.3**: `ArcaneEnchants-1.1.0-26.3.jar`, which requires **Java 25**.
+The maintained target is **Paper-family 26.3**: `ArcaneEnchants-1.1.0-26.3.jar`, which requires **Java 25**.
 
 1. Download `ArcaneEnchants-1.1.0-26.3.jar` from the [releases page](https://github.com/kun433/ArcaneEnchants/releases/latest), or build it yourself.
 2. Drop the jar into `plugins/`.
@@ -78,7 +168,8 @@ Aliases: `/arcaneench`, `/aench`. Permission: `arcaneenchants.admin` (default op
 ## Configuration
 
 Everything tunable lives in `config.yml`: loot chances, trade price and odds, per-behaviour switches and cooldowns,
-attribute syncing, and all in-game messages (MiniMessage format, Chinese and English).
+attribute syncing, and all in-game messages (MiniMessage format, Chinese and English). The per-enchantment numbers
+(attributes per level, trigger conditions) are defined in code.
 
 ```yaml
 loot:
