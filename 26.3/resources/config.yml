@@ -58,6 +58,7 @@ behaviors:
 
 # 提示文本使用 MiniMessage 格式：https://docs.advntr.dev/minimessage/format.html
 # 支持颜色标签，例如 <green>文字</green>
+# 注意：占位符用 %s/%d；想写百分号本身要写成两个 %（例如 6%% 会显示为 6%）。
 messages:
   zh:
     help-header: '<gold>ArcaneEnchants</gold> <gray>共 %d 个附魔：</gray><green>%d 个简单</green><gray> / </gray><red>%d 个复杂</red>'

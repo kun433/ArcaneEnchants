@@ -181,6 +181,7 @@ public final class ArcaneEnchantsBootstrap implements PluginBootstrap {
 
     /**
      * bootstrap 阶段不能用 Bukkit 的配置类，这里只读 config.yml 的 language 一行。
+     * 支持行内注释（# 之后的内容会被截掉）与引号包裹。
      */
     private static String readLanguage(Path dataDirectory) {
         Path config = dataDirectory.resolve("config.yml");
@@ -192,17 +193,15 @@ public final class ArcaneEnchantsBootstrap implements PluginBootstrap {
                 String trimmed = line.trim();
                 if (trimmed.startsWith("language:")) {
                     String value = trimmed.substring("language:".length()).trim();
-                    if (value.endsWith("\"") && value.length() > 1) {
-                        value = value.substring(0, value.length() - 1);
+                    // 去掉行内注释：YAML 里 # 前需要空白，但从严处理，避免把值本身含 # 的情况误判
+                    int comment = value.indexOf('#');
+                    if (comment >= 0) {
+                        value = value.substring(0, comment).trim();
                     }
-                    if (value.startsWith("\"")) {
-                        value = value.substring(1);
-                    }
-                    if (value.endsWith("'")) {
-                        value = value.substring(0, value.length() - 1);
-                    }
-                    if (value.startsWith("'")) {
-                        value = value.substring(1);
+                    if (value.length() > 1 && value.startsWith("\"") && value.endsWith("\"")) {
+                        value = value.substring(1, value.length() - 1);
+                    } else if (value.length() > 1 && value.startsWith("'") && value.endsWith("'")) {
+                        value = value.substring(1, value.length() - 1);
                     }
                     return value.isEmpty() ? "zh_CN" : value;
                 }

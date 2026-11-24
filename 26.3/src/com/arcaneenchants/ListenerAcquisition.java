@@ -138,7 +138,13 @@ public final class ListenerAcquisition implements Listener {
         }
 
         MerchantRecipe recipe = new MerchantRecipe(book, settings.tradeMaxUses);
-        recipe.addIngredient(new ItemStack(Material.EMERALD, Math.max(1, settings.tradeEmeralds * level)));
+        // 价格 = tradeEmeralds × 书等级。单格支付上限 64，超出时拆成两格，
+        // 否则玩家永远凑不齐（例如 24 × 3 = 72 > 64）导致该格交易完全无法完成。
+        int price = Math.max(1, settings.tradeEmeralds * level);
+        recipe.addIngredient(new ItemStack(Material.EMERALD, Math.min(64, price)));
+        if (price > 64) {
+            recipe.addIngredient(new ItemStack(Material.EMERALD, Math.min(64, price - 64)));
+        }
         recipe.setVillagerExperience(10);
         recipe.setExperienceReward(true);
         event.setRecipe(recipe);

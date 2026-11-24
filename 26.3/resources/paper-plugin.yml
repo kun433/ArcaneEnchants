@@ -2,7 +2,7 @@
 # 自定义附魔必须注册在服务端附魔注册表冻结之前，所以本插件是 Paper plugin 格式，
 # 并通过 bootstrapper 在 bootstrap 阶段完成注册。
 name: ArcaneEnchants
-version: 1.1.0
+version: 1.1.1
 main: com.arcaneenchants.ArcaneEnchantsPlugin
 bootstrapper: com.arcaneenchants.ArcaneEnchantsBootstrap
 # 26.3 起 Paper 的 api-version 用「年份.序号」两段式；这里与编译用的 Paper API 保持一致。

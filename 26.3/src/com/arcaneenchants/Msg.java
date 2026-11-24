@@ -25,8 +25,23 @@ public final class Msg {
         return value;
     }
 
-    /** 取一条带占位符的文本。 */
+    /** 取一条带占位符的文本。
+     *
+     * <p>无参调用直接返回原文：消息里常见的字面 {@code %}（例如「0.8% 稀有战利品」）
+     * 不再被 {@link String#format} 当成格式说明符而抛异常。有参时若文本与参数不匹配，
+     * 也遇错退回原文，保证指令不会因为一条消息把整个子命令炸掉。
+     */
     public String format(String key, Object... args) {
-        return String.format(raw(key), args);
+        String text = raw(key);
+        if (args == null || args.length == 0) {
+            // 无参不走 String.format；为了让「%% 表示一个百分号」的规则在有参/无参两条路径上一致，
+            // 这里手动反转义一次
+            return text.replace("%%", "%");
+        }
+        try {
+            return String.format(text, args);
+        } catch (java.util.IllegalFormatException ignored) {
+            return text.replace("%%", "%");
+        }
     }
 }

@@ -84,7 +84,7 @@ The stronger the effect, the harder it is to get:
 - Applies to: pickaxes / shovels / axes / hoes / shears; max level 3
 - Attribute: luck **+1** per level (+3 at max, affects some vanilla loot rolls)
 - Behaviour: each drop from a mined block has a **10%/level** chance to be duplicated (30% at max, hard cap 90%)
-- How to get: librarian trade (24 / 48 / 72 emeralds) / loot chests 0.8%
+- How to get: librarian trade (24 / 48 / 72 emeralds; prices above 64 are split across both trade slots) / loot chests 0.8%
 
 #### Bloodpact
 
@@ -93,7 +93,7 @@ The stronger the effect, the harder it is to get:
 - Applies to: swords; max level 3
 - Attribute: max health **+1** per level (+3 at max)
 - Behaviour: after damaging a mob, heal for **8%/level** of the damage dealt (0.5s cooldown; 24% at max — hitting for 10 damage heals 2.4)
-- How to get: librarian trade (24 / 48 / 72 emeralds) / loot chests 0.8%
+- How to get: librarian trade (24 / 48 / 72 emeralds; prices above 64 are split across both trade slots) / loot chests 0.8%
 
 #### Warder
 
@@ -102,7 +102,7 @@ The stronger the effect, the harder it is to get:
 - Applies to: chestplates; max level 3
 - Attribute: armor toughness **+1** per level (+3 at max)
 - Behaviour: when a hit would drop your health to **35% or below**, you instantly gain a short Resistance buff — level 1: Resistance I 3s / level 2: Resistance II 4s / level 3: Resistance III 5s; 20s cooldown
-- How to get: librarian trade (24 / 48 / 72 emeralds) / loot chests 0.8%
+- How to get: librarian trade (24 / 48 / 72 emeralds; prices above 64 are split across both trade slots) / loot chests 0.8%
 
 #### Resonance
 
@@ -111,7 +111,7 @@ The stronger the effect, the harder it is to get:
 - Applies to: melee weapons (swords, axes — follows the vanilla `enchantable/melee_weapon` tag); max level 3
 - Attribute: attack speed **+4%** per level (+12% at max)
 - Behaviour: hits ignite the target for 2s per level (6s at max)
-- How to get: librarian trade (24 / 48 / 72 emeralds) / loot chests 0.8%
+- How to get: librarian trade (24 / 48 / 72 emeralds; prices above 64 are split across both trade slots) / loot chests 0.8%
 
 ## How attributes are applied
 
@@ -119,6 +119,14 @@ Attribute bonuses are written into the item's `attribute_modifiers` component, s
 (for example "+12% movement speed") and are applied by the game itself — no per-tick temporary attributes from the plugin.
 They are recalculated whenever the item's enchantment levels change, so removing an enchantment in an anvil or grindstone
 leaves no leftovers.
+
+Since the 1.20.5 data-component rework, an explicit `attribute_modifiers` component **replaces** the item's default
+attribute modifiers. The sync therefore writes the vanilla default modifiers (from
+`Material#getDefaultAttributeModifiers`) back into the component together with the plugin's own bonuses — otherwise
+an enchanted diamond sword would lose its native attack damage. Items that already carry third-party custom
+modifiers are left untouched except for the plugin's own entries. When an enchantment is removed and the component
+would only contain the vanilla defaults, the component is dropped entirely so the item falls back to its implicit
+defaults. Items written by v1.1.0 (defaults stripped) are repaired automatically on the next sync.
 
 Applicable items come from the vanilla `enchantable/*` item tags (`#minecraft:swords`, `minecraft:enchantable/armor`,
 `minecraft:enchantable/mining`, `minecraft:enchantable/durability`, and so on), so new tool tiers are picked up
@@ -139,9 +147,9 @@ server's item registry.
 
 ## Install
 
-The maintained target is **Paper-family 26.3**: `ArcaneEnchants-1.1.0-26.3.jar`, which requires **Java 25**.
+The maintained target is **Paper-family 26.3**: `ArcaneEnchants-1.1.1-26.3.jar`, which requires **Java 25**.
 
-1. Download `ArcaneEnchants-1.1.0-26.3.jar` from the [releases page](https://github.com/kun433/ArcaneEnchants/releases/latest), or build it yourself.
+1. Download `ArcaneEnchants-1.1.1-26.3.jar` from the [releases page](https://github.com/kun433/ArcaneEnchants/releases/latest), or build it yourself.
 2. Drop the jar into `plugins/`.
 3. Start the server once; `plugins/ArcaneEnchants/config.yml` is generated.
 4. Enchantments are registered at server start. `/ae status` should report `10/10` registered.

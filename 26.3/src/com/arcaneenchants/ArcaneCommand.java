@@ -158,7 +158,9 @@ public final class ArcaneCommand implements BasicCommand {
         }
         var leftovers = target.getInventory().addItem(book);
         leftovers.values().forEach(stack -> target.getWorld().dropItemNaturally(target.getLocation(), stack));
-        send(sender, "gave", target.getName(), def.displayName(plugin.language()), Math.min(level, def.maxLevel()));
+        // 显示值与实际写入的书等级走同一套 clamp，避免「/ae give 玩家 keen 0」显示 0 实给 1 级
+        send(sender, "gave", target.getName(), def.displayName(plugin.language()),
+                Math.max(1, Math.min(def.maxLevel(), level)));
     }
 
     private void apply(Player player, String id, int level) {

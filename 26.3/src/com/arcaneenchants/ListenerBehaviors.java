@@ -12,6 +12,7 @@ import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -34,6 +35,15 @@ public final class ListenerBehaviors implements Listener {
 
     public ListenerBehaviors(ArcaneEnchantsPlugin plugin) {
         this.plugin = plugin;
+    }
+
+    // ---------------------------------------------------------------- 冷却数据清理
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onQuit(PlayerQuitEvent event) {
+        // 冷却表只存 UUID 到时间戳的映射，玩家退出时顺手清掉，避免长期运行缓慢增长
+        lifestealCooldown.remove(event.getPlayer().getUniqueId());
+        warderCooldown.remove(event.getPlayer().getUniqueId());
     }
 
     // ---------------------------------------------------------------- 永固：无限耐久
